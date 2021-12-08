@@ -10,11 +10,14 @@ function onMessage(ws, data) {
 }
 
 function disconection(ws, data) {
-    console.log(data);
-    console.log(`disconection`);
+    console.log(ws.ID);
+    console.log(`disconection ${ws.ID}`);
 }
 
 function onConnection(ws, req) {
+    const parsedUrl = new URL(`http://localhost:3000${req.url}`);
+    const id = parsedUrl.searchParams.get("id");
+    ws.ID = id
     ws.on('close', data => { disconection(ws, data) })
     ws.on('message', data => onMessage(ws, data));
     ws.on('error', error => onError(ws, error));
@@ -25,6 +28,7 @@ function onConnection(ws, req) {
 function broadcast(jsonObject) {
     if (!this.clients) return;
     this.clients.forEach(client => {
+        // console.log(client.ID);
         if (client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify(jsonObject));
         }
@@ -37,7 +41,8 @@ function corsValidation(origin) {
 
 function verifyClient(info, callback) {
     if (!corsValidation(info.origin)) return callback(false);
-    const token = info.req.url.split('token=')[1];
+    const parsedUrl = new URL(`http://localhost:3000${info.req.url}`);
+    const token = parsedUrl.searchParams.get("token");
 
     if (token) {
         if (token === '123456')
@@ -50,7 +55,8 @@ function verifyClient(info, callback) {
 module.exports = (server) => {
     const wss = new WebSocket.Server({
         server,
-        verifyClient
+        verifyClient,
+        path: "/wbs"
     });
 
     wss.on('connection', onConnection);
