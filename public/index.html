@@ -5,21 +5,78 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <script src="./js/bootstrap.min.js"></script>
     <title>Teste123</title>
 </head>
 
 <body>
     <div>
         <textarea name="history" id="history" readonly cols="60" rows="10"></textarea><br>
+        <!-- <textarea name="online" id="online" readonly cols="60" rows="10"></textarea><br> -->
+        <label for="online">Dispositivos Online:</label>
+        <select name="online" id="online"></select><br>
         <input type="text" id="enviar"><br>
         <button id="send">Enviar</button>
     </div>
+    <div class="contentSelect m-1">
+        <div class="card">
+            <div class="card-header">
+                Equipamento que deseja Conectar
+            </div>
+            <div class="card-body">
+                <p class="card-text">Digite o Mac do equipamento que deseja se conectar</p>
+                <div class="row">
+                    <div class="col-6">
+                        <input class="form-control" type="text" name="deviceMac" id="deviceMac" value="38:2B:78:04:2B:DF">
+
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-success" id="checkDevice">Verificar e Conectar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="contentDevice">
+        <div class="card">
+            <div class="card-header">
+                Saídas
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-row justify-content-around flex-wrap">
+                    <div class="card">
+                        <div class="card-header">
+                            Saída 1
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex flex-row justify-content-around flex-wrap">
+                                <button class="btn btn-danger" id="off">Desligar</button>
+                                <button class="btn btn-success" id="on">Ligar</button>
+                                <button class="btn btn-warning" id="togle">Inverter</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            Saída 2
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex flex-row justify-content-around flex-wrap">
+                                <button class="btn btn-danger" id="off">Desligar</button>
+                                <button class="btn btn-success" id="on">Ligar</button>
+                                <button class="btn btn-warning" id="togle">Inverter</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-<script src="./app.js"></script>
-<style>
-    .history {
-        margin: auto;
-    }
-</style>
+<script src="./websocket.js"></script>
+<script src="./requests.js"></script>
 
 </html>
