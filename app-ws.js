@@ -6,7 +6,7 @@ function onError(ws, err) {
 
 function onMessage(ws, data) {
     console.log(`onMessage: ${data}`);
-    ws.send(`recebido!`);
+    ws.send(`recebido!: ${data}`);
 }
 
 function disconection(ws, data) {
@@ -16,8 +16,8 @@ function disconection(ws, data) {
 
 function onConnection(ws, req) {
     const parsedUrl = new URL(`http://localhost:3000${req.url}`);
-    const id = parsedUrl.searchParams.get("id");
-    ws.ID = id
+    // const id = parsedUrl.searchParams.get("id");
+    // ws.ID = id
     ws.on('close', data => { disconection(ws, data) })
     ws.on('message', data => onMessage(ws, data));
     ws.on('error', error => onError(ws, error));
@@ -40,12 +40,12 @@ function corsValidation(origin) {
 }
 
 function verifyClient(info, callback) {
-    if (!corsValidation(info.origin)) return callback(false);
+    // if (!corsValidation(info.origin)) return callback(false);
     const parsedUrl = new URL(`http://localhost:3000${info.req.url}`);
-    const token = parsedUrl.searchParams.get("token");
+    const device = parsedUrl.searchParams.get("device");
 
-    if (token) {
-        if (token === '123456')
+    if (device) {
+        if (device === '123456')
             return callback(true);
     }
 
@@ -55,8 +55,8 @@ function verifyClient(info, callback) {
 module.exports = (server) => {
     const wss = new WebSocket.Server({
         server,
-        verifyClient,
-        path: "/wbs"
+        // verifyClient,
+        path: "/device"
     });
 
     wss.on('connection', onConnection);

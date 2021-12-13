@@ -15,12 +15,11 @@ app.use(express.json());
 
 app.use(morgan('dev'));
 
+app.use(express.static('public'));
+
 app.post('/login', (req, res, next) => {
     res.json({ token: '123456' });
 });
 
-app.get('/', (req, res, next) => {
-    res.sendFile(path.join(__dirname + '/index.html'));
-});
 
 module.exports = app
