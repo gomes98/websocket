@@ -2,6 +2,7 @@ let history = document.getElementById('history')
 let select = document.getElementById('online')
 let enviar = document.getElementById('enviar')
 let send = document.getElementById('send')
+let enviarSts = document.getElementById('sts')
 
 let baseUrl = window.location.href;
 let urlWs = ""
@@ -45,6 +46,12 @@ if (baseUrl.startsWith("https")) {
 send.addEventListener('click', () => {
     webSocket.send(enviar.value)
     enviar.value = ""
+})
+enviarSts.addEventListener('click', () => {
+    let output = document.getElementById('output').value
+    let status = document.getElementById('status').value
+    let data = `{ "output${output}" : "${status}" }`
+    webSocket.send(data)
 })
 var webSocket
 var client

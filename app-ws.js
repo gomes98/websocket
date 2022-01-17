@@ -12,18 +12,19 @@ function onError(ws, err) {
 
 function onMessage(ws, data) {
     console.log(`onMessage: ${data}`);
-    // if (ws.device) {
-    let toSend = joins.filter(e => e.device == ws.device)
-    toSend.forEach(e => {
-            sendToClient(e.client, `${data}`)
+    if (ws.device) {
+        let toSend = joins.filter(e => e.device == ws.device)
+        toSend.forEach(e => {
+            let payload = { device: ws.device, data: `${data}` }
+            sendToClient(e.client, payload)
         })
-        // }
-        // if (ws.client) {
-        //     let toSend = joins.filter(e => e.client == ws.client)
-        //     toSend.forEach(e => {
-        //         sendToDevice(e.device, `${data}`)
-        //     })
-        // }
+    }
+    if (ws.client) {
+        let toSend = joins.filter(e => e.client == ws.client)
+        toSend.forEach(e => {
+            sendToDevice(e.device, `${data}`)
+        })
+    }
 }
 
 function disconection(ws, data) {
@@ -72,7 +73,7 @@ function onConnection(ws, req) {
     console.log({ devices, clients });
 
     ws.on('ping', data => {
-        console.log("PING");
+        console.log("PING", `${ws.device}`);
     })
 
     ws.on('close', data => { disconection(ws, data) })
